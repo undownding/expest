@@ -10,7 +10,6 @@ import { ParamType } from './internal/param.type'
 import path from 'path'
 import { validateSync } from 'class-validator'
 import * as console from 'node:console'
-import 'reflect-metadata'
 
 export function registerControllers(app: Express, controllers: any[]) {
   app.use(express.json())
@@ -53,9 +52,9 @@ export function registerControllers(app: Express, controllers: any[]) {
             const dto = convertType(paramValue, targetType)
             if (typeof dto === 'object') {
               validationErrors.push(
-                validateSync(dto, {
-                  skipMissingProperties: true,
-                }),
+                ...validateSync(dto, { skipMissingProperties: false }).flatMap(
+                  (error) => Object.values(error.constraints || {}),
+                ),
               )
             }
             return dto

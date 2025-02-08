@@ -4,9 +4,6 @@ import viteConfig from './vite.config'
 export default mergeConfig(
   viteConfig,
   defineConfig({
-    esbuild: {
-      loader: 'tsx',
-    },
     test: {
       include: ['test/**/*.{test,spec}.?(c|m)[jt]s?(x)'],
       coverage: {

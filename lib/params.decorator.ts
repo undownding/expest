@@ -1,6 +1,6 @@
-import 'reflect-metadata'
 import { PARAM_METADATA_KEY } from './internal/metakeys'
 import { type ParamType } from './internal/param.type'
+import * as console from 'node:console'
 
 function createParamDecorator(paramType: ParamType, key?: string) {
   return (

@@ -1,4 +1,3 @@
-import 'reflect-metadata'
 import { ROUTE_METADATA_KEY } from './internal/metakeys'
 import { normalizeRoutePath } from './internal/path.utils'
 
