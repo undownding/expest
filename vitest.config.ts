@@ -12,7 +12,7 @@ export default mergeConfig(
       },
       reporters: ['default', 'junit'],
       outputFile: {
-        junit: 'junit.xml',
+        junit: 'test-report.junit.xml',
       },
     },
   }),

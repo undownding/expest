@@ -58,7 +58,7 @@ jobs:
         name: Test Report
         with:
           name: Test Report                 # Name of the check run which will be created
-          path: 'junit.xml'                 # Path to test results (inside artifact .zip)
+          path: 'test-report.junit.xml'     # Path to test results (inside artifact .zip)
           reporter: jest-junit              # Format of test results
 
       - name: Coverage Report
@@ -69,6 +69,12 @@ jobs:
           show_line: true
           show_branch: true
           show_missing: true
+
+      - name: Upload test results to Codecov
+        if: ${{ !cancelled() }}
+        uses: codecov/test-results-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
 
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v5
