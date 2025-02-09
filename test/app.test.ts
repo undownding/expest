@@ -2,9 +2,12 @@ import { beforeAll, describe, test } from 'vitest'
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
+  Patch,
   Post,
+  Put,
   Query,
   registerControllers,
 } from '../lib'
@@ -50,6 +53,27 @@ class TestController {
   getQuery(@Query() params: QueryParams): object {
     return params
   }
+
+  @Patch('patch-test')
+  patchTest(): object {
+    return {
+      foo: 'bar',
+    }
+  }
+
+  @Delete('delete-test')
+  deleteTest(): object {
+    return {
+      foo: 'bar',
+    }
+  }
+
+  @Put('put-test')
+  putTest(): object {
+    return {
+      foo: 'bar',
+    }
+  }
 }
 
 describe('Controller test', () => {
@@ -72,7 +96,25 @@ describe('Controller test', () => {
       .expect({ foo: 'bar' })
   })
 
-  test('Post test without required param', () => {
+  test('Patch test', () => {
+    return request(app)
+      .patch('/test/patch-test')
+      .expect(200)
+      .expect({ foo: 'bar' })
+  })
+
+  test('Delete test', () => {
+    return request(app)
+      .delete('/test/delete-test')
+      .expect(200)
+      .expect({ foo: 'bar' })
+  })
+
+  test('Put test', () => {
+    return request(app).put('/test/put-test').expect(200).expect({ foo: 'bar' })
+  })
+
+  test('Post test without required body param', () => {
     return request(app).post('/test/post-body-echo').expect(400)
   })
 
@@ -88,7 +130,7 @@ describe('Controller test', () => {
     })
   })
 
-  test('Query test without required param', () => {
+  test('Query test without required query param', () => {
     return request(app).get('/test/test-query').expect(400)
   })
 })
