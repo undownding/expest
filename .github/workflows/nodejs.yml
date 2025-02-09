@@ -1,0 +1,76 @@
+# This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: Node.js CI
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - lib/**
+      - package.json
+      - yarn.lock
+      - .github
+  pull_request:
+    branches: [ main ]
+
+permissions:
+  contents: read
+  actions: read
+  checks: write
+  pages: write
+  packages: write
+  pull-requests: write
+
+jobs:
+  test:
+    name: Lint & Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup node.js with .nvmrc
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+
+      - name: Install dependencies
+        run: |
+          corepack enable
+          yarn set version berry
+          yarn install --immutable 
+
+      - name: Run Lint
+        run: yarn lint
+
+      - name: Build
+        run: yarn build
+
+      - name: Run Test
+        run: yarn test --coverage
+        continue-on-error: true
+
+      - uses: dorny/test-reporter@v1
+        name: Test Report
+        with:
+          name: Test Report                 # Name of the check run which will be created
+          path: 'junit.xml'                 # Path to test results (inside artifact .zip)
+          reporter: jest-junit              # Format of test results
+
+      - name: Coverage Report
+        uses: 5monkeys/cobertura-action@master
+        with:
+          path: coverage/cobertura-coverage.xml
+          minimum_coverage: 50
+          show_line: true
+          show_branch: true
+          show_missing: true
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}

@@ -8,7 +8,7 @@ export default mergeConfig(
       include: ['test/**/*.{test,spec}.?(c|m)[jt]s?(x)'],
       coverage: {
         provider: 'v8',
-        reporter: ['text', 'cobertura'],
+        reporter: ['text-summary', 'cobertura'],
       },
       reporters: ['default', 'junit'],
       outputFile: {

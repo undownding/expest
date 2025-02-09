@@ -22,4 +22,6 @@
 # IDE
 /.idea
 
+# test report
+/coverage
 junit.xml
