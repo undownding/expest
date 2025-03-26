@@ -7,7 +7,7 @@ A NestJS-like controller framework for Express.
 To install the dependencies, run:
 
 ```bash
-yarn install
+yarn install @undownding/expest
 ```
 
 ## Usage
